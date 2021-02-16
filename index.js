@@ -1,16 +1,19 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
+require("dotenv/config");
 
 //Importing routes
-const authRoute = require("./routes/auth");
+const userRoute = require("./routes/user");
+const doctorRoute = require("./routes/doctor");
 
 mongoose.connect(
-  "mongodb+srv://anurag:anurag@medichain.9zhne.mongodb.net/medichaindb?retryWrites=true&w=majority",
+  process.env.DB_CONNECTION,
   { useNewUrlParser: true, useUnifiedTopology: true },
   () => console.log("Db Connected")
 );
+
+console.log();
 
 //middleware
 app.use(express.json());
@@ -20,6 +23,7 @@ app.get("/", (req, res) => {
 });
 
 //Route middlewares
-app.use("/api/user", authRoute);
+app.use("/api/user", userRoute);
+app.use("/api/doctor", doctorRoute);
 
 app.listen(4000, () => console.log("Server up and running"));

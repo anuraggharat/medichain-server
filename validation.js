@@ -1,27 +1,50 @@
-const Joi = require('@hapi/joi');
+const Joi = require("@hapi/joi");
 
-const registerValidation = data => {
-    const schema = {
-        name: Joi.string().min(6).required(),
-        email: Joi.string().min(6).required().email(),
-        password: Joi.string().min(6).required(),
-        gender: Joi.string().min(1).required(),
-        phoneNo: Joi.string().min(6).required(),
-        dob: Joi.string().min(6).required()
-    };
-    return Joi.validate(data, schema);
-    
-}
+const registerValidationUser = (data) => {
+  const schema = {
+    name: Joi.string().min(6).required(),
+    email: Joi.string().min(6).required().email(),
+    password: Joi.string().min(6).required(),
+    gender: Joi.string().min(1).required(),
+    phoneno: Joi.string().min(6).required(),
+    age: Joi.string().min(1).required(),
+    city: Joi.string().required(),
+  };
+  return Joi.validate(data, schema);
+};
 
-const loginValidation = data => {
-    const schema = {
-        
-        email: Joi.string().min(6).required().email(),
-        password: Joi.string().min(6).required()
-    };
-    return Joi.validate(data, schema);
-    
-}
+const loginValidationUser = (data) => {
+  const schema = {
+    email: Joi.string().min(6).required().email(),
+    password: Joi.string().min(6).required(),
+  };
+  return Joi.validate(data, schema);
+};
 
-module.exports.registerValidation = registerValidation;
-module.exports.loginValidation = loginValidation;
+//validation for doctor
+
+const registerValidationDoctor = (data) => {
+  const schema = {
+    name: Joi.string().min(6).required(),
+    email: Joi.string().min(6).required().email(),
+    password: Joi.string().min(6).required(),
+    specialization: Joi.string().required(),
+    gender: Joi.string().min(1).required(),
+    phoneno: Joi.string().min(10).required(),
+    age: Joi.string().min(1).required(),
+    city: Joi.string().required(),
+  };
+  return Joi.validate(data, schema);
+};
+
+const loginValidationDoctor = (data) => {
+  const schema = {
+    email: Joi.string().min(6).required().email(),
+    password: Joi.string().min(6).required(),
+  };
+  return Joi.validate(data, schema);
+};
+module.exports.registerValidationUser = registerValidationUser;
+module.exports.loginValidationUser = loginValidationUser;
+module.exports.registerValidationDoctor = registerValidationDoctor;
+module.exports.loginValidationDoctor = loginValidationDoctor;
