@@ -30,6 +30,7 @@ router.post("/register", async (req, res) => {
     phoneno: req.body.phoneno,
     age: req.body.age,
     city: req.body.city,
+    specialization: req.body.specialization,
   });
   console.log(doctor);
   try {
@@ -43,6 +44,7 @@ router.post("/register", async (req, res) => {
         });
       })
       .catch((err) => {
+        console.log(err);
         res.status(500).json({
           message: "Unable to create Doctor",
         });
@@ -58,18 +60,20 @@ router.post("/login", async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   //checking if email exist
-  const user = await User.findOne({ email: req.body.email });
-  if (!user) return res.status(400).send("Email not found");
+  const doctor = await Doctor.findOne({ email: req.body.email });
+  if (!doctor) return res.status(400).send("Email not found");
 
   //Password checking
-  const vaidPass = await bcrypt.compare(req.body.password, user.password);
+  const vaidPass = await bcrypt.compare(req.body.password, doctor.password);
   if (!vaidPass) return res.status(400).send("password incorrect");
 
   //res.send('logged in!');
 
   //create and assign a token
-  const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY);
-  res.header("auth-token", token).json({ token: token, user: user });
+  const token = jwt.sign({ _id: doctor._id }, process.env.SECRET_KEY);
+  res
+    .header("auth-token", token)
+    .json({ token: token, user: doctor, message: "User Successfully created" });
 });
 
 module.exports = router;
