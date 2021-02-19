@@ -45,6 +45,7 @@ router.post("/register", async (req, res) => {
         console.log("Doctor created");
         res.status(201).json({
           message: "Doctor Created",
+          success: true,
           result: result,
         });
       })
@@ -85,14 +86,12 @@ router.post("/login", async (req, res) => {
 
   //create and assign a token
   const token = jwt.sign({ _id: doctor._id }, process.env.SECRET_KEY);
-  res
-    .header("auth-token", token)
-    .json({
-      success: true,
-      token: token,
-      user: doctor,
-      message: "User Successfully created",
-    });
+  res.header("auth-token", token).json({
+    success: true,
+    token: token,
+    user: doctor,
+    message: "Login Successfull",
+  });
 });
 
 module.exports = router;
