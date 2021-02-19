@@ -9,13 +9,20 @@ const jwt = require("jsonwebtoken");
 
 router.post("/register", async (req, res) => {
   //validating data
-
+  // console.log(req.body);
   const { error } = registerValidationUser(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  console.log(error);
+  if (error)
+    return res
+      .status(200)
+      .json({ success: false, error: error.details[0].message });
 
   //Checking if email already exists
   const emailExist = await User.findOne({ email: req.body.email });
-  if (emailExist) return res.status(400).send("Email already exist");
+  if (emailExist)
+    return res
+      .status(200)
+      .json({ success: false, error: "Email already exist" });
 
   //hashing
   const salt = await bcrypt.genSalt(10);
@@ -36,14 +43,15 @@ router.post("/register", async (req, res) => {
     user
       .save()
       .then((result) => {
-        console.log("user created");
         res.status(201).json({
-          message: "User Created",
+          success: true,
+          message: "User created successfully",
           result: result,
         });
       })
       .catch((err) => {
         res.status(500).json({
+          success: false,
           message: "Unable to create User,Try again!",
         });
       });
