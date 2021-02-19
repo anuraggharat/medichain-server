@@ -63,24 +63,34 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   //validating data
   const { error } = loginValidationUser(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error)
+    return res
+      .status(200)
+      .json({ success: false, error: error.details[0].message });
 
   //checking if email exist
   const user = await User.findOne({ email: req.body.email });
-  if (!user) return res.status(400).send("Email not found");
+  if (!user)
+    return res.status(200).json({ success: false, error: "Email not found" });
 
   //Password checking
   const vaidPass = await bcrypt.compare(req.body.password, user.password);
-  if (!vaidPass) return res.status(400).send("Password incorrect");
+  if (!vaidPass)
+    return res
+      .status(200)
+      .json({ success: false, error: "Password incorrect" });
 
   //res.send('logged in!');
 
   //create and assign a token
 
   const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY);
-  res
-    .header("auth-token", token)
-    .json({ token: token, user: user, message: "User created successfullly" });
+  res.header("auth-token", token).json({
+    success: true,
+    token: token,
+    user: user,
+    message: "Successfullly logged in!",
+  });
 });
 
 module.exports = router;

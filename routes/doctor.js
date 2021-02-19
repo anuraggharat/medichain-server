@@ -11,11 +11,17 @@ router.post("/register", async (req, res) => {
   //validating data
 
   const { error } = registerValidationDoctor(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error)
+    return res
+      .status(200)
+      .json({ success: false, error: error.details[0].message });
 
   //Checking if email already exists
   const emailExist = await Doctor.findOne({ email: req.body.email });
-  if (emailExist) return res.status(400).send("Email already exist");
+  if (emailExist)
+    return res
+      .status(200)
+      .json({ success: false, error: "Email already exist" });
 
   //hashing
   const salt = await bcrypt.genSalt(10);
@@ -32,7 +38,6 @@ router.post("/register", async (req, res) => {
     city: req.body.city,
     specialization: req.body.specialization,
   });
-  console.log(doctor);
   try {
     doctor
       .save()
@@ -45,27 +50,36 @@ router.post("/register", async (req, res) => {
       })
       .catch((err) => {
         console.log(err);
-        res.status(500).json({
-          message: "Unable to create Doctor",
-        });
+        res
+          .status(200)
+          .json({ success: false, error: "Unable to create User" });
       });
   } catch (err) {
-    res.status(400).send(err);
+    res.status(200).json({ success: false, error: "Unable to create User" });
   }
 });
 
 router.post("/login", async (req, res) => {
   //validating data
   const { error } = loginValidationDoctor(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error)
+    return res
+      .status(200)
+      .json({ success: false, error: error.details[0].message });
 
   //checking if email exist
   const doctor = await Doctor.findOne({ email: req.body.email });
-  if (!doctor) return res.status(400).send("Email not found");
+  if (!doctor)
+    return res
+      .status(200)
+      .json({ success: false, error: "Email Does not exist!" });
 
   //Password checking
   const vaidPass = await bcrypt.compare(req.body.password, doctor.password);
-  if (!vaidPass) return res.status(400).send("password incorrect");
+  if (!vaidPass)
+    return res
+      .status(200)
+      .json({ success: false, error: "password incorrect" });
 
   //res.send('logged in!');
 
@@ -73,7 +87,12 @@ router.post("/login", async (req, res) => {
   const token = jwt.sign({ _id: doctor._id }, process.env.SECRET_KEY);
   res
     .header("auth-token", token)
-    .json({ token: token, user: doctor, message: "User Successfully created" });
+    .json({
+      success: true,
+      token: token,
+      user: doctor,
+      message: "User Successfully created",
+    });
 });
 
 module.exports = router;
