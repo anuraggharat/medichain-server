@@ -94,4 +94,21 @@ router.post("/login", async (req, res) => {
   });
 });
 
+//get all users
+router.get("/getdoctors", async (req, res) => {
+  try {
+    const data = await Doctor.find();
+    const count = await Doctor.find().count();
+
+    res.status(200).json({
+      success: true,
+      data: data,
+      count: count,
+      message: "Displaying list of doctors available",
+    });
+  } catch (error) {
+    res.status(200).json({ success: false, error: error });
+  }
+});
+
 module.exports = router;

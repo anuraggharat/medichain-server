@@ -93,4 +93,21 @@ router.post("/login", async (req, res) => {
   });
 });
 
+//get all users
+router.get("/getusers", async (req, res) => {
+  try {
+    const data = await User.find();
+    const count = await User.find().count();
+
+    res.status(200).json({
+      success: true,
+      data: data,
+      count: count,
+      message: "Displaying all list of users available",
+    });
+  } catch (error) {
+    res.status(200).json({ success: false, error: error });
+  }
+});
+
 module.exports = router;
