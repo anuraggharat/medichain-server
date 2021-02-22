@@ -8,26 +8,21 @@ const jwt = require("jsonwebtoken");
 const Doctor = require("../model/Doctor");
 
 router.post("/register", async (req, res) => {
-  //validating data
-
   const { error } = registerValidationDoctor(req.body);
   if (error)
     return res
       .status(200)
       .json({ success: false, error: error.details[0].message });
 
-  //Checking if email already exists
   const emailExist = await Doctor.findOne({ email: req.body.email });
   if (emailExist)
     return res
       .status(200)
       .json({ success: false, error: "Email already exist" });
 
-  //hashing
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
-  //creating new user
   const doctor = new Doctor({
     name: req.body.name,
     email: req.body.email,
@@ -82,9 +77,6 @@ router.post("/login", async (req, res) => {
       .status(200)
       .json({ success: false, error: "password incorrect" });
 
-  //res.send('logged in!');
-
-  //create and assign a token
   const token = jwt.sign({ _id: doctor._id }, process.env.SECRET_KEY);
   res.header("auth-token", token).json({
     success: true,
@@ -94,7 +86,7 @@ router.post("/login", async (req, res) => {
   });
 });
 
-//get all users
+//get all Doctors
 router.get("/getdoctors", async (req, res) => {
   try {
     const data = await Doctor.find();
