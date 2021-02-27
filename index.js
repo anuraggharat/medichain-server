@@ -4,6 +4,7 @@ const app = express();
 const mongoose = require("mongoose");
 require("dotenv/config");
 
+var port = process.env.PORT || 8080;
 //cors policy
 app.use(cors());
 //Importing routes
@@ -28,4 +29,6 @@ app.use("/api/user", userRoute);
 app.use("/api/doctor", doctorRoute);
 app.use("/api", encrydecryRoute);
 
-app.listen(4000, () => console.log("Server up and running"));
+app.listen(port, function () {
+  console.log("app running on port 8080");
+});
