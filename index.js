@@ -4,7 +4,7 @@ const app = express();
 const mongoose = require("mongoose");
 require("dotenv/config");
 
-var port = process.env.PORT || 5000;
+var port = process.env.PORT || 3000;
 //cors policy
 app.use(cors());
 //Importing routes
@@ -30,5 +30,5 @@ app.use("/api/doctor", doctorRoute);
 app.use("/api", encrydecryRoute);
 
 app.listen(port, function () {
-  console.log("app running on port 8080");
+  console.log(`App running on port ${port}`);
 });
