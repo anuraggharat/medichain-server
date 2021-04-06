@@ -3,6 +3,7 @@ const Joi = require("@hapi/joi");
 const registerValidationUser = (data) => {
   const schema = {
     name: Joi.string().min(6).required(),
+    account: Joi.string().min(6).required(),
     email: Joi.string().min(6).required().email(),
     password: Joi.string().min(6).required(),
     gender: Joi.string().min(1).required(),
@@ -27,6 +28,7 @@ const registerValidationDoctor = (data) => {
   const schema = {
     name: Joi.string().min(6).required(),
     email: Joi.string().min(6).required().email(),
+    account: Joi.string().min(6).required(),
     password: Joi.string().min(6).required(),
     specialization: Joi.string().required(),
     gender: Joi.string().min(1).required(),

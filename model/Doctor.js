@@ -13,6 +13,12 @@ const doctorSchema = new mongoose.Schema({
     max: 255,
     min: 6,
   },
+  account: {
+    type: String,
+    required: true,
+    max: 255,
+    min: 6,
+  },
   password: {
     type: String,
     required: true,
