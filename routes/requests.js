@@ -37,7 +37,7 @@ router.post("/putrequest", async (req, res) => {
   }
 });
 
-//get all Doctors
+//get all requests
 router.post("/getrequests", async (req, res) => {
     console.log(req.body);
   try {
@@ -60,5 +60,22 @@ router.post("/getrequests", async (req, res) => {
     res.status(200).json({ success: false, error: error });
   }
 });
+
+router.delete('/:id',(req,res)=>{
+  console.log(req.params)
+  Requests.remove({_id: req.params.id},(err,request)=>{
+    if(err){
+      res.json({
+        success:false,
+        message:"Could not delete request"
+      })
+    }
+    else res.json({
+      success:true,
+      message:"Request removed"
+    })
+  })
+   
+})
 
 module.exports = router;
