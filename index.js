@@ -10,6 +10,7 @@ app.use(cors());
 //Importing routes
 const userRoute = require("./routes/user");
 const doctorRoute = require("./routes/doctor");
+const reqroute = require('./routes/requests')
 const encrydecryRoute = require("./routes/encrydecry");
 
 mongoose.connect(
@@ -27,6 +28,8 @@ app.get("/", (req, res) => {
 //Routes
 app.use("/api/user", userRoute);
 app.use("/api/doctor", doctorRoute);
+app.use("/api/requests", reqroute);
+
 app.use("/api", encrydecryRoute);
 
 app.listen(port, function () {
