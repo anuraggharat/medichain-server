@@ -155,6 +155,28 @@ router.get('/getaccessslist/:id',async(req ,res)=>{
     res.status(200).json({ success: false, error: error });
   }
 })
+
+router.put('/revokeaccess/:id',(req,res)=>{
+  User.findOne({_id:req.params.id},(err,result)=>{
+    
+    if (err) {
+      res.status(200).json({
+        success:false,
+        message:"Cannot revoke Access"
+      })
+    } else {
+      result.accesslist.id(req.body.id).remove();
+      result.save();
+      res.status(200).json({
+        success: true,
+        message: "Access list updated",
+        data:result
+        });
+    }
+
+
+    })
+})
  
 
 module.exports = router;
