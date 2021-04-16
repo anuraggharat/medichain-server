@@ -62,7 +62,6 @@ router.post("/getrequests", async (req, res) => {
 });
 
 router.delete('/:id',(req,res)=>{
-  console.log(req.params)
   Requests.remove({_id: req.params.id},(err,request)=>{
     if(err){
       res.json({

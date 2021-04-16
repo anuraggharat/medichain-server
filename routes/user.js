@@ -111,4 +111,43 @@ router.get("/getusers", async (req, res) => {
   }
 });
 
+router.put("/addaccesser",(req,res)=>{
+  User.findByIdAndUpdate(
+    { _id: req.body.id },
+    {
+      $push: {
+        accesslist:{
+          name:req.body.doctor,
+          date:req.body.date,
+          account:req.body.account
+        },
+      },
+    },function(err,result) {
+       if(err){
+            res.send(err)
+        }
+        else{
+            res.send(result)
+        }
+    }
+  );
+})
+
+
+router.get('/getaccessslist/:id',async(req ,res)=>{
+  try {
+    const data = await User.find({_id:req.params.id},{accesslist:1});
+    
+
+    res.status(200).json({
+      success: true,
+      data: data,
+      message: "Displaying all list of accessers available",
+    });
+  } catch (error) {
+    res.status(200).json({ success: false, error: error });
+  }
+})
+ 
+
 module.exports = router;

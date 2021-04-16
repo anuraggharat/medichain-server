@@ -1,5 +1,22 @@
 const mongoose = require("mongoose");
 
+const docSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  date: {
+    type: String,
+    required: true,
+  },
+  account: {
+    type: String,
+    required: true,
+  },
+});
+
+
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -47,6 +64,10 @@ const userSchema = new mongoose.Schema({
   city: {
     type: String,
     required: true,
+  },
+  accesslist: {
+    type: [docSchema],
+    required:false
   },
 });
 
