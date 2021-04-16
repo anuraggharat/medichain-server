@@ -124,10 +124,17 @@ router.put("/addaccesser",(req,res)=>{
       },
     },function(err,result) {
        if(err){
-            res.send(err)
+           res.status(200).json({
+             success: false,
+             message: "Doctor cannot be added",
+           });
         }
         else{
-            res.send(result)
+           res.status(200).json({
+             success: true,
+             message: "Doctor added",
+           });
+            
         }
     }
   );
